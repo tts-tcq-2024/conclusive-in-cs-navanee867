@@ -3,9 +3,14 @@ using conclusive.Interfaces;
 
 namespace conclusive
 {
-    public class ControllerAlert(ILogger logger) : IAlertTarget
+    public class ControllerAlert : IAlertTarget
     {
-        private readonly ILogger _logger = logger;
+        private readonly ILogger _logger;
+
+        public ControllerAlert(ILogger logger)
+        {
+            _logger = logger;
+        }
 
         public void Alert(BreachType breachType)
         {
