@@ -12,22 +12,20 @@ namespace conclusive
             _logger = logger;
         }
 
-
         public void Alert(BreachType breachType)
         {
             string recepient = "a.b@c.com";
-            switch (breachType)
+
+            Dictionary<BreachType, string> messages = new Dictionary<BreachType, string>
             {
-                case BreachType.TOO_LOW:
-                    _logger.Log($"To: {recepient}");
-                    _logger.Log("Hi, the temperature is too low");
-                    break;
-                case BreachType.TOO_HIGH:
-                    _logger.Log($"To: {recepient}");
-                    _logger.Log("Hi, the temperature is too high");
-                    break;
-                case BreachType.NORMAL:
-                    break;
+                { BreachType.TOO_LOW, "Hi, the temperature is too low" },
+                { BreachType.TOO_HIGH, "Hi, the temperature is too high" }
+            };
+
+            if (messages.ContainsKey(breachType))
+            {
+                _logger.Log($"To: {recepient}");
+                _logger.Log(messages[breachType]);
             }
         }
     }
