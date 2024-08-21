@@ -21,24 +21,29 @@ namespace conclusive.Helpers
 
         public static BreachType ClassifyTemperatureBreach(CoolingType coolingType, double temperatureInC)
         {
-            int lowerLimit = 0;
-            int upperLimit = 0;
-            switch (coolingType)
-            {
-                case CoolingType.PASSIVE_COOLING:
-                    lowerLimit = 0;
-                    upperLimit = 35;
-                    break;
-                case CoolingType.HI_ACTIVE_COOLING:
-                    lowerLimit = 0;
-                    upperLimit = 45;
-                    break;
-                case CoolingType.MED_ACTIVE_COOLING:
-                    lowerLimit = 0;
-                    upperLimit = 40;
-                    break;
-            }
+            var (lowerLimit, upperLimit) = GetTemperatureLimits(coolingType);
             return InferBreach(temperatureInC, lowerLimit, upperLimit);
+        }
+
+        private static (double lowerLimit, double upperLimit) GetTemperatureLimits(CoolingType coolingType)
+        {
+            return (GetLowerLimit(coolingType), GetUpperLimit(coolingType));
+        }
+
+        private static double GetUpperLimit(CoolingType coolingType)
+        {
+            return coolingType switch
+            {
+                CoolingType.PASSIVE_COOLING => 35,
+                CoolingType.MED_ACTIVE_COOLING => 40,
+                CoolingType.HI_ACTIVE_COOLING => 45,
+                _ => throw new ArgumentException("Invalid cooling type", nameof(coolingType))
+            };
+        }
+
+        private static double GetLowerLimit(CoolingType coolingType)
+        {
+            return 0;
         }
 
         public static void CheckAndAlert(IAlertTarget alertTarget, BatteryCharacter batteryChar, double temperatureInC)
