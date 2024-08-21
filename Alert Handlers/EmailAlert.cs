@@ -3,9 +3,15 @@ using conclusive.Interfaces;
 
 namespace conclusive
 {
-    public class EmailAlert(ILogger logger) : IAlertTarget
+    public class EmailAlert : IAlertTarget
     {
-        private readonly ILogger _logger = logger;
+        private readonly ILogger _logger;
+
+        public EmailAlert(ILogger logger)
+        {
+            _logger = logger;
+        }
+
 
         public void Alert(BreachType breachType)
         {
